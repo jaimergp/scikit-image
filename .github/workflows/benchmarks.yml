@@ -24,9 +24,6 @@ jobs:
       - name: Run benchmarks
         shell: bash -l {0}
         run: |
-          # Check benchmarks are in shape
-          asv check -E existing
-
           # ID this runner
           asv machine --yes
 
