@@ -1,0 +1,34 @@
+# Workflow to build and test wheels
+name: Benchmark
+
+on: [pull_request]
+
+jobs:
+
+  benchmark_linux:
+    name: Linux
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout scikit-image
+        uses: actions/checkout@v1
+
+      - name: Setup Miniconda
+        uses: conda-incubator/setup-miniconda
+
+      - name: Setup some dependencies
+        shell: bash -l {0}
+        run:
+          pip install asv
+
+      - name: Run benchmarks
+        shell: bash -l {0}
+        run: |
+          # Check benchmarks are in shape
+          asv check -E existing
+
+          # ID this runner
+          asv machine --yes
+
+          # Run benchmarks for current commit against main
+          asv continuous ${GITHUB_BASE_REF##*/} ${GITHUB_REF##*/}
