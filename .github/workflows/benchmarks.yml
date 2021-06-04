@@ -24,6 +24,8 @@ jobs:
       - name: Run benchmarks
         shell: bash -l {0}
         run: |
+          set -x
+
           # ID this runner
           asv machine --yes
 
