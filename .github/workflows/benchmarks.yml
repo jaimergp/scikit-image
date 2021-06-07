@@ -14,7 +14,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Setup Miniconda
         uses: conda-incubator/setup-miniconda@v2
@@ -28,6 +27,8 @@ jobs:
         shell: bash -l {0}
         run: |
           set -x
+
+          git checkout ${GITHUB_HEAD_REF##*/}
 
           # ID this runner
           asv machine --yes
