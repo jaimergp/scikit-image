@@ -11,7 +11,9 @@ jobs:
 
     steps:
       - name: Checkout scikit-image
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Setup Miniconda
         uses: conda-incubator/setup-miniconda@v2
