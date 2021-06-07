@@ -30,4 +30,4 @@ jobs:
           asv machine --yes
 
           # Run benchmarks for current commit against main
-          asv continuous ${GITHUB_BASE_REF##*/} ${GITHUB_REF##*/}
+          asv continuous ${GITHUB_BASE_REF##*/} ${GITHUB_HEAD_REF##*/}
