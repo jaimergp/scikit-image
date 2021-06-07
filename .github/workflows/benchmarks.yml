@@ -28,10 +28,11 @@ jobs:
         run: |
           set -x
 
-          git checkout ${GITHUB_HEAD_REF##*/}
+          git checkout ${GITHUB_BASE_REF##*/}
+          git checkout ${GITHUB_SHA}
 
           # ID this runner
           asv machine --yes
 
           # Run benchmarks for current commit against main
-          asv continuous ${GITHUB_BASE_REF##*/} ${GITHUB_HEAD_REF##*/}
+          asv continuous ${GITHUB_BASE_REF##*/} ${GITHUB_SHA}
