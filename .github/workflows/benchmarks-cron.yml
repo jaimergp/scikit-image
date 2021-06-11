@@ -1,0 +1,41 @@
+name: Benchmark cron
+
+on:
+  schedule:
+    - cron: '23 */6 * * * '
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+jobs:
+
+  benchmark_linux:
+    name: HEAD vs HEAD^
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+
+      - name: Setup Miniconda
+        uses: conda-incubator/setup-miniconda@v2
+
+      - name: Setup some dependencies
+        shell: bash -l {0}
+        run:
+          pip install asv
+
+      - name: Run benchmarks
+        shell: bash -l {0}
+        run: |
+          set -x
+
+          # ID this runner
+          asv machine --yes
+
+          echo "Baseline:  HEAD^"
+          echo "Contender: HEAD"
+
+          # Run benchmarks for last commit against previous one
+          asv continuous 'HEAD^' 'HEAD'
