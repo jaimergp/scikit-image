@@ -39,3 +39,9 @@ jobs:
 
           # Run benchmarks for last commit against previous one
           asv continuous 'HEAD^' 'HEAD'
+
+      - uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: asv-benchmark-results
+          path: .asv/results
