@@ -38,7 +38,7 @@ jobs:
           echo "Contender: HEAD"
 
           # Run benchmarks for last commit against previous one
-          asv continuous 'HEAD^' 'HEAD'
+          asv continuous --interleave-processes --split --show-stderr 'HEAD^' 'HEAD'
 
       - uses: actions/upload-artifact@v2
         if: always()
