@@ -11,6 +11,16 @@ jobs:
   benchmark_linux:
     name: HEAD vs HEAD^
     runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: "processes_1"
+            asv-args: "--processes 1"
+          - name: "no_interleave"
+            asv-args: "--no-interleave-processes"
+          - name: "default"
+            asv-args: "--interleave_processes --processes 2"
 
     steps:
       - name: Checkout
@@ -34,14 +44,11 @@ jobs:
           # ID this runner
           asv machine --yes
 
-          echo "Baseline:  HEAD^"
-          echo "Contender: HEAD"
-
           # Run benchmarks for last commit against previous one
-          asv continuous --interleave-processes --split --show-stderr 'HEAD^' 'HEAD'
+          asv continuous ${{ matrix.asv-args }} --split --show-stderr 'HEAD^' 'HEAD'
 
       - uses: actions/upload-artifact@v2
         if: always()
         with:
-          name: asv-benchmark-results
+          name: asv-benchmark-results-${{ matrix.name }}
           path: .asv/results
