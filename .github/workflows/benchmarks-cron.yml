@@ -9,18 +9,18 @@ on:
 jobs:
 
   benchmark_linux:
-    name: HEAD vs HEAD^
+    name: ${{ matrix.name }}
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
       matrix:
         include:
           - name: "processes_1"
-            asv-args: "--processes 1"
+            asv-args: "-a processes=1"
           - name: "no_interleave"
             asv-args: "--no-interleave-processes"
           - name: "default"
-            asv-args: "--interleave_processes --processes 2"
+            asv-args: "--interleave-processes -a processes=2"
 
     steps:
       - name: Checkout
